@@ -16,7 +16,34 @@ function shuffle(a){return a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).ma
 function startBattle(i){battleIndex=i;qIndex=0;selected=null;answered=false;const b=battles[i];currentQuestions=b.questions.map(q=>({...q,choices:shuffle(q.choices)}));bossHp=b.hp;bossMax=b.hp;chapterTitle.textContent=b.title;bossName.textContent=b.bossName;bossSub.textContent=b.bossSub;bossSpeech.textContent=b.bossName+"が あらわれた！";bossImg.src=b.bossImg;bossImg.alt=b.bossName;bossArt.classList.remove("defeated");loadQuestion();updateBars()}
 function loadQuestion(){selected=null;answered=false;const q=currentQuestions[qIndex],b=battles[battleIndex];stagePill.textContent=`⚔ 連戦 ${battleIndex+1}/2`;qPill.textContent=`問題 ${qIndex+1}/${currentQuestions.length}`;questionTag.textContent=q.tag;questionNo.textContent=`問題 ${qIndex+1}`;questionText.textContent=q.q;dataBox.innerHTML=b.baseData.map(x=>`<div>${x}</div>`).join("");if(q.focus){focusBox.innerHTML=q.focus;focusBox.classList.add("show")}else{focusBox.innerHTML="";focusBox.classList.remove("show")}choices.innerHTML=q.choices.map((c,i)=>`<button class="choice" data-choice="${c}">${String.fromCharCode(65+i)}. ${c}</button>`).join("");document.querySelectorAll(".choice").forEach(btn=>btn.onclick=()=>{if(answered)return;document.querySelectorAll(".choice").forEach(b=>b.classList.remove("selected"));btn.classList.add("selected");selected=btn.dataset.choice});resultBox.textContent="選択肢を選んで「こうげき！」を押そう。"}
 function updateBars(){bossHpBar.style.width=`${Math.max(0,bossHp/bossMax*100)}%`;bossHpText.textContent=`${Math.max(0,bossHp)} / ${bossMax}`;playerHpBar.style.width=`${playerHp}%`;playerHpText.textContent=`${playerHp} / 100`;playerHpTop.textContent=`HP ${playerHp}/100`;missPill.textContent=`❤ ミス ${misses}/3`}
-function attack(){if(answered)return;if(!selected){resultBox.innerHTML="先に選択肢を選ぼう。";return}const q=currentQuestions[qIndex];document.querySelectorAll(".choice").forEach(btn=>{if(btn.dataset.choice===q.a)btn.classList.add("correct");if(btn.dataset.choice===selected&&selected!==q.a)btn.classList.add("wrong")});answered=true;if(selected===q.a){const damage=q.final?999:40;bossHp=Math.max(0,bossHp-damage);bossArt.classList.add("hit");setTimeout(()=>bossArt.classList.remove("hit"),360);document.body.classList.add("flash");setTimeout(()=>document.body.classList.remove("flash"),700);resultBox.innerHTML=`<strong>${q.final?"かいしんのいちげき！":"正解！"}</strong><br>${damage}ダメージ！<br><br>${q.exp}`}else{misses++;playerHp=Math.max(0,playerHp-34);currentQuestions[qIndex].choices=shuffle(currentQuestions[qIndex].choices);resultBox.innerHTML=`<strong>攻撃失敗！</strong><br>同じ問題にもう一度挑戦しよう。<br><br>${q.exp}`;if(misses>=3)showModal("敗北…","HPが尽きた。リセットしてもう一度挑戦しよう。<br><br><button class='action' onclick='resetGame()'>リセットして再挑戦</button>","つづける")}updateBars();if(bossHp<=0){bossArt.classList.add("defeated");if(battleIndex===0){gameComplete=false;showModal("LEVEL UP!","熱分解スライムをたおした！<br>化学反応式 Lv.1 → Lv.2<br>次は CaCO₃ゴーレムだ！","つづける")}else{gameComplete=true;showModal("MISSION COMPLETE!","CaCO₃ゴーレムをたおした！<br>未知の塩酸の濃度を攻略した！<br><br>🏆 実験まとめ COMPLETE","トップに戻る")}}}
+
+function playAttackEffect(isCritical, damage){
+  const pop=document.getElementById("attackPop");
+  const word=document.getElementById("attackWord");
+  const dmg=document.getElementById("damagePop");
+  if(pop){
+    word.textContent=isCritical?"かいしん！":"いけっ！";
+    pop.classList.remove("play");
+    void pop.offsetWidth;
+    pop.classList.add("play");
+  }
+  if(dmg){
+    dmg.textContent=isCritical?"999 DAMAGE!!":`${damage} DAMAGE!`;
+    dmg.classList.remove("play");
+    void dmg.offsetWidth;
+    dmg.classList.add("play");
+  }
+}
+function playMissEffect(){
+  const pc=document.querySelector(".player-card");
+  if(pc){
+    pc.classList.remove("missflash");
+    void pc.offsetWidth;
+    pc.classList.add("missflash");
+  }
+}
+
+function attack(){if(answered)return;if(!selected){resultBox.innerHTML="先に選択肢を選ぼう。";return}const q=currentQuestions[qIndex];document.querySelectorAll(".choice").forEach(btn=>{if(btn.dataset.choice===q.a)btn.classList.add("correct");if(btn.dataset.choice===selected&&selected!==q.a)btn.classList.add("wrong")});answered=true;if(selected===q.a){const damage=q.final?999:40;bossHp=Math.max(0,bossHp-damage);playAttackEffect(q.final,damage);bossArt.classList.add("hit","blast");setTimeout(()=>bossArt.classList.remove("hit","blast"),460);document.body.classList.add("flash");setTimeout(()=>document.body.classList.remove("flash"),700);resultBox.innerHTML=`<strong>${q.final?"かいしんのいちげき！":"正解！"}</strong><br>${damage}ダメージ！<br><br>${q.exp}`}else{misses++;playerHp=Math.max(0,playerHp-34);playMissEffect();currentQuestions[qIndex].choices=shuffle(currentQuestions[qIndex].choices);resultBox.innerHTML=`<strong>攻撃失敗！</strong><br>同じ問題にもう一度挑戦しよう。<br><br>${q.exp}`;if(misses>=3)showModal("敗北…","HPが尽きた。リセットしてもう一度挑戦しよう。<br><br><button class='action' onclick='resetGame()'>リセットして再挑戦</button>","つづける")}updateBars();if(bossHp<=0){bossArt.classList.add("defeated");if(battleIndex===0){gameComplete=false;showModal("LEVEL UP!","熱分解スライムをたおした！<br>化学反応式 Lv.1 → Lv.2<br>次は CaCO₃ゴーレムだ！","つづける")}else{gameComplete=true;showModal("MISSION COMPLETE!","CaCO₃ゴーレムをたおした！<br>未知の塩酸の濃度を攻略した！<br><br>🏆 実験まとめ COMPLETE","トップに戻る")}}}
 function next(){if(misses>=3)return;if(!answered){resultBox.innerHTML="先に攻撃して、解説を確認しよう。";return}if(bossHp<=0){if(battleIndex===0){closeModal();startBattle(1);return}return}const q=currentQuestions[qIndex];if(selected!==q.a){loadQuestion();return}qIndex=(qIndex+1)%currentQuestions.length;loadQuestion()}
 function showHint(){hintText.textContent=currentQuestions[qIndex].hint||"実験データをよく見るのじゃ。";hintOverlay.style.display="flex"}function closeHint(){hintOverlay.style.display="none"}
 function showModal(t,txt,btn){modalTitle.innerHTML=t;modalText.innerHTML=txt;modalButton.textContent=btn||"つづける";overlay.style.display="flex"}function closeModal(){overlay.style.display="none";if(gameComplete)topReturn()}function topReturn(){gameComplete=false;titleScreen.classList.remove("hide")}function resetGame(){closeModal();battleIndex=0;playerHp=100;misses=0;gameComplete=false;startBattle(0)}function startGame(){const n=(document.getElementById("playerNameInput").value||"").trim()||"科学者";document.getElementById("playerNameLabel").textContent=n;titleScreen.classList.add("hide");battleIndex=0;playerHp=100;misses=0;gameComplete=false;startBattle(0)}

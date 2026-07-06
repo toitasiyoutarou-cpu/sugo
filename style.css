@@ -88,3 +88,81 @@ button.next{background:linear-gradient(#18c8ed,#087da5);border-color:#51eaff}but
 .name-box input{width:100%;font-size:20px;padding:12px 14px;border-radius:12px;border:3px solid #4a7395;background:#071521;color:#fff;font-weight:900}
 .name-box input::placeholder{color:#93aec2}
 .attack-scientist-wrap{display:none!important}
+
+/* Ver.10 attack effects */
+.attack-pop{
+  position:fixed;
+  right:2vw;
+  bottom:-220px;
+  width:clamp(130px,18vw,240px);
+  z-index:30;
+  pointer-events:none;
+  opacity:0;
+}
+.attack-pop img{
+  width:100%;
+  filter:drop-shadow(0 14px 10px rgba(0,0,0,.45));
+}
+.attack-word{
+  position:absolute;
+  left:-70px;
+  top:20%;
+  background:#fff8e8;
+  color:#111;
+  border:3px solid #123;
+  border-radius:16px;
+  padding:8px 12px;
+  font-weight:900;
+  font-size:clamp(16px,2.5vw,26px);
+}
+.attack-pop.play{
+  animation:attackPopMove .75s ease-out;
+}
+@keyframes attackPopMove{
+  0%{opacity:0;transform:translate(80px,160px) scale(.85)}
+  20%{opacity:1;transform:translate(0,0) scale(1)}
+  55%{opacity:1;transform:translate(-48px,-24px) scale(1.08)}
+  100%{opacity:0;transform:translate(-120px,-40px) scale(.9)}
+}
+.damage-pop{
+  position:fixed;
+  left:50%;
+  top:34%;
+  transform:translate(-50%,-50%);
+  z-index:31;
+  opacity:0;
+  color:#ffd84a;
+  font-weight:900;
+  font-size:clamp(34px,7vw,78px);
+  text-shadow:0 5px 0 #000,0 0 24px rgba(255,216,74,.6);
+  pointer-events:none;
+}
+.damage-pop.play{
+  animation:damagePopMove .8s ease-out;
+}
+@keyframes damagePopMove{
+  0%{opacity:0;transform:translate(-50%,-20%) scale(.6)}
+  25%{opacity:1;transform:translate(-50%,-50%) scale(1.12)}
+  100%{opacity:0;transform:translate(-50%,-120%) scale(.9)}
+}
+.boss-art.blast{
+  animation:bossBlast .45s ease-out;
+}
+@keyframes bossBlast{
+  0%{transform:translateX(0) scale(1);filter:brightness(1)}
+  35%{transform:translateX(18px) scale(.98);filter:brightness(2)}
+  70%{transform:translateX(-8px) scale(1.02);filter:brightness(1.2)}
+  100%{transform:translateX(0) scale(1);filter:brightness(1)}
+}
+.player-card.missflash{
+  animation:missFlash .55s ease-out;
+}
+@keyframes missFlash{
+  0%,100%{filter:brightness(1)}
+  25%,70%{filter:brightness(1.7) saturate(1.5)}
+}
+@media (orientation:portrait){
+  .attack-pop{width:120px;right:0}
+  .attack-word{font-size:14px;left:-50px}
+  .damage-pop{top:42%}
+}
