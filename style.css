@@ -98,3 +98,14 @@ button.reset{background:#24384c;border-color:#6e91ad}
   .logo{font-size:27px}.boss-card{grid-template-columns:100px 1fr}.boss-art{height:100px}.chapter-banner{font-size:16px}.boss-name{font-size:15px}
   .question{font-size:17px}.choice{font-size:14px}
 }
+
+/* ===== Ver.5 additions ===== */
+.right-zone{position:relative;overflow:hidden}
+.mini-board{display:none;background:#fffdf4;border:3px solid #b5a27f;border-radius:14px;padding:10px 14px;margin:0 0 12px;font-size:20px;font-weight:900;line-height:1.55}
+.mini-board.show{display:block}
+.scientist-wrap{position:absolute;right:6px;bottom:2px;width:210px;opacity:.95;pointer-events:none;z-index:0}
+.scientist{width:100%;height:auto;filter:drop-shadow(0 12px 10px rgba(0,0,0,.35))}
+.result{position:relative;z-index:1}
+@media (min-width:900px) and (max-width:1200px){.scientist-wrap{width:165px}.mini-board{font-size:16px}}
+@media (max-width:899px){.scientist-wrap{display:none}.mini-board{font-size:14px;padding:8px}.data{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:520px){.data{grid-template-columns:repeat(2,1fr)}}

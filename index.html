@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CHEM QUEST｜実験まとめ 二連戦</title>
+  <title>CHEM QUEST Ver.5｜実験まとめ 二連戦</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -26,9 +26,7 @@
       <div class="boss-card panel">
         <div class="chapter-banner" id="chapterTitle">第1戦：熱分解スライム</div>
         <div class="speech" id="bossSpeech">熱分解スライムが あらわれた！</div>
-        <div class="boss-art" id="bossArt">
-          <img id="bossImg" src="" alt="boss" />
-        </div>
+        <div class="boss-art" id="bossArt"><img id="bossImg" src="" alt="boss" /></div>
         <div class="boss-row">
           <div>
             <div class="boss-name" id="bossName"></div>
@@ -49,7 +47,7 @@
       </div>
 
       <div class="data-card panel">
-        <div class="data-title">📜 使えるデータ</div>
+        <div class="data-title">📜 式量・使えるデータ</div>
         <div class="data" id="dataBox"></div>
       </div>
     </section>
@@ -59,19 +57,18 @@
         <span class="questionNo" id="questionNo">問題 1</span>
         <span class="tag" id="questionTag">物質量</span>
       </div>
+      <div class="mini-board" id="focusBox"></div>
       <div class="question" id="questionText"></div>
       <div class="choices" id="choices"></div>
-
       <div class="actions">
         <button class="action attack" id="attackBtn">⚔ こうげき！（解答）</button>
         <button class="action next" id="nextBtn">つぎへ →</button>
         <button class="action reset" id="resetBtn">リセット</button>
       </div>
-
+      <div class="scientist-wrap"><img src="img/scientist.png" alt="若手科学者" class="scientist" /></div>
       <div class="result" id="resultBox">選択肢を選んで「こうげき！」を押そう。</div>
     </section>
   </main>
-
   <div class="footer-note">正解でボスにダメージ。最終問題は「かいしんのいちげき！」</div>
 </div>
 
@@ -82,7 +79,6 @@
     <button class="action next" onclick="closeModal()">つづける</button>
   </div>
 </div>
-
 <script src="script.js"></script>
 </body>
 </html>
