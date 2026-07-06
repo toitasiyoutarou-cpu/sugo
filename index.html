@@ -1,6 +1,34 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>CHEM QUEST Ver.6</title><link rel="stylesheet" href="style.css"></head>
+<title>CHEM QUEST Ver.6</title><link rel="stylesheet" href="style.css">
+<style>
+.reaction-box{
+  margin:10px 0 12px;
+  padding:12px 14px;
+  border:3px solid #f4c44f;
+  border-radius:16px;
+  background:linear-gradient(180deg,#fff8da,#fff1b8);
+  color:#1d2433;
+  box-shadow:0 5px 0 rgba(96,62,12,.22);
+  font-weight:900;
+}
+.reaction-box .reaction-label{
+  display:inline-block;
+  margin-bottom:6px;
+  padding:3px 10px;
+  border-radius:999px;
+  background:#16324a;
+  color:#fff2a8;
+  font-size:14px;
+}
+.reaction-box .reaction-formula{
+  font-size:clamp(20px,4vw,31px);
+  line-height:1.35;
+  letter-spacing:.02em;
+  text-align:center;
+}
+</style>
+</head>
 <body>
 <div class="title-screen" id="titleScreen"><div class="title-card">
 <div class="title-logo">🧪 CHEM QUEST</div><div class="title-sub">実験まとめ 二連戦</div>
@@ -18,7 +46,7 @@
 <div class="data-card panel"><div class="data-title">📜 式量・使えるデータ</div><div class="data" id="dataBox"></div></div>
 </section><section class="right-zone panel">
 <div class="question-head"><span class="questionNo" id="questionNo"></span><span class="tag" id="questionTag"></span></div>
-<div class="mini-board" id="focusBox"></div><div class="question" id="questionText"></div><div class="choices" id="choices"></div>
+<div class="mini-board" id="focusBox"></div><div class="reaction-box" id="reactionBox" hidden></div><div class="question" id="questionText"></div><div class="choices" id="choices"></div>
 <div class="actions"><button class="action attack" id="attackBtn">⚔ こうげき！（解答）</button><button class="action hint" id="hintBtn">👴 ヒント</button><button class="action next" id="nextBtn">つぎへ →</button><button class="action reset" id="resetBtn">リセット</button></div>
 <div class="result" id="resultBox"></div>
 </section></main><div class="footer-note">若手科学者が攻撃。老科学者はヒント担当。</div></div>
@@ -91,6 +119,51 @@
     document.addEventListener('pointerdown', () => {
       Object.values(sounds).forEach(a => { try { a.load(); } catch(e) {} });
     }, { once:true });
+  });
+})();
+</script>
+
+<script>
+(() => {
+  const reactions = [
+    {
+      test: t => /NaHCO|炭酸水素ナトリウム|熱分解/.test(t) && /(Na₂CO₃|Na2CO3|炭酸ナトリウム|CO₂|CO2|mol|モル|質量|式)/.test(t),
+      formula: '2NaHCO₃ → Na₂CO₃ + H₂O + CO₂'
+    },
+    {
+      test: t => /(CaCO₃|CaCO3|炭酸カルシウム)/.test(t) && /(HCl|塩酸|CO₂|CO2|二酸化炭素|mol|モル|質量|式)/.test(t),
+      formula: 'CaCO₃ + 2HCl → CaCl₂ + H₂O + CO₂'
+    },
+    {
+      test: t => /(H₂O₂|H2O2|過酸化水素)/.test(t) && /(O₂|O2|酸素|式|係数|mol|モル)/.test(t),
+      formula: '2H₂O₂ → 2H₂O + O₂'
+    }
+  ];
+
+  function updateReactionBox(){
+    const q = document.getElementById('questionText');
+    const box = document.getElementById('reactionBox');
+    if(!q || !box) return;
+    const text = q.textContent || '';
+    const hit = reactions.find(r => r.test(text));
+    if(hit){
+      box.hidden = false;
+      box.innerHTML = '<div class="reaction-label">この問いで使う反応式</div><div class="reaction-formula">' + hit.formula + '</div>';
+    }else{
+      box.hidden = true;
+      box.innerHTML = '';
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    updateReactionBox();
+    const q = document.getElementById('questionText');
+    if(q){
+      new MutationObserver(updateReactionBox).observe(q, {childList:true, subtree:true, characterData:true});
+    }
+    ['nextBtn','attackBtn','hintBtn','resetBtn','startBtn'].forEach(id => {
+      document.getElementById(id)?.addEventListener('click', () => setTimeout(updateReactionBox, 80));
+    });
   });
 })();
 </script>
