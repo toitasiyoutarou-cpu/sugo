@@ -1,0 +1,1 @@
+見た目変更なし版です。既存のstyle.cssとscript.jsは同じフォルダに残したまま、このindex.htmlとaudioフォルダを追加してください。

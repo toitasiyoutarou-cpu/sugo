@@ -31,4 +31,67 @@
 
 <div class="overlay" id="overlay"><div class="modal"><h2 id="modalTitle"></h2><p id="modalText"></p><button class="action next" id="modalButton" onclick="closeModal()">つづける</button></div></div>
 <div class="hint-overlay" id="hintOverlay"><div class="hint-card"><img src="img/old_scientist.png" class="old-scientist" alt="老科学者"><div class="hint-text"><div class="hint-name">老科学者</div><div id="hintText"></div><button class="action next" onclick="closeHint()">わかった！</button></div></div></div>
-<script src="script.js"></script></body></html>
+<script src="script.js"></script>
+<script>
+(() => {
+  const AUDIO_PATH = 'audio/';
+  const sounds = {
+    battle: new Audio(AUDIO_PATH + 'battle.mp3'),
+    correct: new Audio(AUDIO_PATH + 'correct.mp3'),
+    wrong: new Audio(AUDIO_PATH + 'wrong.mp3'),
+    levelup: new Audio(AUDIO_PATH + 'levelup.mp3')
+  };
+  sounds.battle.loop = true;
+  sounds.battle.volume = 0.28;
+  sounds.correct.volume = 0.7;
+  sounds.wrong.volume = 0.7;
+  sounds.levelup.volume = 0.8;
+
+  let bgmStarted = false;
+  let lastResult = '';
+
+  function play(a, restart = true) {
+    try {
+      if (restart) a.currentTime = 0;
+      const p = a.play();
+      if (p && p.catch) p.catch(() => {});
+    } catch(e) {}
+  }
+  function startBgm(){ bgmStarted = true; play(sounds.battle, false); }
+  function stopBgm(){ try { sounds.battle.pause(); sounds.battle.currentTime = 0; } catch(e){} }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const startBtn = document.getElementById('startBtn');
+    const attackBtn = document.getElementById('attackBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const resultBox = document.getElementById('resultBox');
+    const modalTitle = document.getElementById('modalTitle');
+
+    startBtn?.addEventListener('click', () => setTimeout(startBgm, 120));
+    resetBtn?.addEventListener('click', () => { stopBgm(); bgmStarted = false; });
+
+    attackBtn?.addEventListener('click', () => {
+      setTimeout(() => {
+        const txt = (resultBox?.textContent || '').trim();
+        if (!txt || txt === lastResult) return;
+        lastResult = txt;
+        if (/正解|成功|かいしん|撃破|クリア|勝利|DAMAGE|ダメージ/.test(txt)) play(sounds.correct);
+        else if (/不正解|ちが|違|ミス|失敗|残念/.test(txt)) play(sounds.wrong);
+      }, 180);
+    });
+
+    if (modalTitle) {
+      new MutationObserver(() => {
+        const t = modalTitle.textContent || '';
+        if (/撃破|クリア|勝利|CLEAR|LEVEL|レベル/.test(t)) play(sounds.levelup);
+        if (/敗北|GAME OVER/.test(t)) play(sounds.wrong);
+      }).observe(modalTitle, {childList:true, characterData:true, subtree:true});
+    }
+
+    document.addEventListener('pointerdown', () => {
+      Object.values(sounds).forEach(a => { try { a.load(); } catch(e) {} });
+    }, { once:true });
+  });
+})();
+</script>
+</body></html>
