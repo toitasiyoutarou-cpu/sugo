@@ -400,6 +400,58 @@
   .action{font-size:clamp(14px,1.55vw,21px) !important;min-height:40px !important;padding:7px 6px !important;}
 }
 
+
+
+/* ===== iPad横画面：上部ステータスを左側HP枠へ移動し、問題カードを上に詰める ===== */
+@media (orientation: landscape) and (min-width:900px) and (max-width:1366px){
+  .topbar{
+    grid-template-columns:1fr !important;
+    margin-bottom:6px !important;
+  }
+  .topbar > .status{
+    display:none !important;
+  }
+  .left-zone .player-card{
+    display:block !important;
+    min-height:0 !important;
+    padding:12px 14px !important;
+  }
+  .left-zone .player-card .player-scientist,
+  .left-zone .player-card .player-info{
+    display:none !important;
+  }
+  .left-zone .player-card .status{
+    display:grid !important;
+    grid-template-columns:1fr 1fr !important;
+    gap:8px !important;
+    justify-content:stretch !important;
+  }
+  .left-zone .player-card .pill{
+    min-width:0 !important;
+    width:100% !important;
+    padding:8px 8px !important;
+    font-size:clamp(15px,1.7vw,22px) !important;
+    text-align:center !important;
+    white-space:nowrap !important;
+  }
+  .battle-layout{
+    align-items:start !important;
+  }
+  .right-zone{
+    margin-top:0 !important;
+    max-height:calc(100dvh - 116px) !important;
+  }
+}
+
+@media (orientation: landscape) and (min-width:900px) and (max-width:1366px) and (max-height:760px){
+  .topbar{margin-bottom:4px !important;}
+  .brand .logo{font-size:clamp(38px,4.8vw,62px) !important;}
+  .left-zone .player-card{padding:9px 11px !important;}
+  .left-zone .player-card .status{gap:6px !important;}
+  .left-zone .player-card .pill{font-size:clamp(14px,1.55vw,20px) !important;padding:7px 6px !important;}
+  .right-zone{max-height:calc(100dvh - 102px) !important;}
+}
+
 </style>
 </head>
 <body>
@@ -540,4 +592,32 @@
   });
 })();
 </script>
+
+<script>
+(() => {
+  const mq = window.matchMedia('(orientation: landscape) and (min-width:900px) and (max-width:1366px)');
+  let originalParent = null;
+  let originalNext = null;
+  function moveStatus(){
+    const status = document.querySelector('.status');
+    const topbar = document.querySelector('.topbar');
+    const playerCard = document.querySelector('.player-card');
+    if(!status || !topbar || !playerCard) return;
+    if(!originalParent){ originalParent = status.parentNode; originalNext = status.nextSibling; }
+    if(mq.matches){
+      if(status.parentNode !== playerCard) playerCard.appendChild(status);
+    }else{
+      if(originalParent && status.parentNode !== originalParent){
+        if(originalNext) originalParent.insertBefore(status, originalNext);
+        else originalParent.appendChild(status);
+      }
+    }
+  }
+  window.addEventListener('DOMContentLoaded', moveStatus);
+  window.addEventListener('resize', moveStatus);
+  window.addEventListener('orientationchange', () => setTimeout(moveStatus, 150));
+  if(mq.addEventListener) mq.addEventListener('change', moveStatus);
+})();
+</script>
+
 </body></html>
