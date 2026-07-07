@@ -1,1 +1,1 @@
-Classroom配信用の1ファイル版です。index.htmlだけで画像・音声・CSS・JSを含みます。Google Classroom/Driveのプレビューで動かない場合は、Safari/Chromeで開くか、GitHub Pages等で公開したURLをClassroomに貼ってください。
+Classroom/GitHub Pages用。index.htmlをアップロードしてください。STARTが動かない原因になりやすいIDグローバル依存を修正済み。
