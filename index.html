@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <title>CHEM QUEST Ver.6</title><link rel="stylesheet" href="style.css">
 <style>
 .reaction-box{
@@ -27,6 +27,106 @@
   letter-spacing:.02em;
   text-align:center;
 }
+
+
+/* iPad横画面・Classroom配信用最適化 */
+@media (orientation: landscape) and (min-width: 900px) and (max-width: 1366px){
+  html,body{width:100%;min-height:100dvh;overflow-x:hidden;}
+  body{background:#07111d;}
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:10px 14px 12px;
+  }
+  .topbar{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:10px;
+    align-items:center;
+    margin-bottom:10px;
+  }
+  .brand .logo{font-size:clamp(34px,5.1vw,56px);line-height:.95;white-space:nowrap;}
+  .brand .sub{font-size:14px;line-height:1.2;}
+  .status{display:grid;grid-template-columns:repeat(2,auto);gap:7px;justify-content:end;}
+  .pill{font-size:clamp(15px,1.8vw,20px);padding:8px 14px;min-width:138px;text-align:center;}
+  .battle-layout{
+    display:grid;
+    grid-template-columns:minmax(330px,38%) 1fr;
+    gap:12px;
+    align-items:stretch;
+  }
+  .panel{border-radius:22px;}
+  .left-zone{
+    display:grid;
+    grid-template-rows:minmax(235px,1fr) auto auto;
+    gap:10px;
+    min-width:0;
+  }
+  .boss-card{padding:12px 14px;}
+  .chapter-banner{font-size:clamp(21px,2.5vw,30px);padding:9px 12px;margin-bottom:8px;}
+  .speech{display:none;}
+  .boss-art{height:clamp(120px,21vh,175px);display:flex;align-items:center;justify-content:center;}
+  .boss-art img{max-height:100%;max-width:100%;object-fit:contain;}
+  .boss-name{font-size:clamp(20px,2.3vw,27px);}
+  .boss-sub{font-size:14px;}
+  .hp-number{font-size:clamp(18px,2vw,24px);}
+  .bar{height:15px;}
+  .player-card,.data-card{padding:12px 14px;}
+  .player-scientist{display:none;}
+  .player-title{font-size:clamp(20px,2.3vw,28px);}
+  .data-title{font-size:clamp(18px,2vw,24px);margin-bottom:8px;}
+  .data{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+  .data div,.data span{font-size:clamp(15px,1.6vw,20px);padding:6px 8px;}
+  .right-zone{padding:14px 18px;min-height:0;}
+  .question-head{margin-bottom:8px;}
+  .questionNo{font-size:clamp(24px,3vw,36px);padding:8px 14px;}
+  .tag{font-size:clamp(14px,1.6vw,18px);padding:8px 12px;}
+  .mini-board{font-size:clamp(15px,1.7vw,19px);padding:8px 10px;margin-bottom:8px;}
+  .reaction-box{margin:6px 0 8px;padding:8px 12px;border-width:2px;border-radius:14px;}
+  .reaction-box .reaction-label{font-size:13px;margin-bottom:4px;}
+  .reaction-box .reaction-formula{font-size:clamp(20px,2.7vw,30px);}
+  .question{font-size:clamp(22px,2.65vw,33px);line-height:1.35;margin:8px 0 10px;}
+  .choices{display:grid;gap:8px;}
+  .choice{font-size:clamp(18px,2.1vw,26px);padding:10px 13px;border-radius:14px;min-height:44px;}
+  .actions{display:grid;grid-template-columns:1.25fr .9fr .9fr .9fr;gap:9px;margin-top:10px;}
+  .action{font-size:clamp(17px,2vw,24px);padding:12px 10px;border-radius:16px;min-height:50px;}
+  .result{font-size:clamp(16px,1.8vw,22px);line-height:1.45;margin-top:8px;max-height:13vh;overflow:auto;}
+  .footer-note{display:none;}
+  .hint-card{max-width:820px;max-height:82dvh;overflow:auto;}
+}
+
+/* iPad横で高さが足りないブラウザ内表示用：さらに圧縮 */
+@media (orientation: landscape) and (min-width:900px) and (max-height:720px){
+  .wrap{padding-top:6px;}
+  .brand .sub{display:none;}
+  .topbar{margin-bottom:6px;}
+  .battle-layout{gap:9px;}
+  .left-zone{gap:8px;grid-template-rows:minmax(205px,1fr) auto auto;}
+  .boss-art{height:clamp(100px,18vh,145px);}
+  .player-card{display:none;}
+  .data{grid-template-columns:repeat(2,1fr);}
+  .right-zone{padding:12px 15px;}
+  .question{font-size:clamp(20px,2.4vw,29px);line-height:1.28;}
+  .choice{padding:8px 12px;min-height:40px;}
+  .action{min-height:44px;padding:9px 8px;}
+  .result{max-height:9vh;}
+}
+
+/* 画面が横でも幅が小さい端末用 */
+@media (orientation: landscape) and (max-width:899px){
+  .wrap{padding:8px;}
+  .battle-layout{grid-template-columns:34% 1fr;gap:8px;}
+  .brand .sub,.speech,.footer-note{display:none;}
+  .boss-art{height:120px;}
+  .player-card{display:none;}
+  .data{grid-template-columns:1fr;}
+  .right-zone{padding:10px;}
+  .question{font-size:22px;line-height:1.3;}
+  .choice{font-size:18px;padding:8px 10px;}
+  .actions{grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;}
+  .action{font-size:16px;padding:8px 6px;}
+}
+
 </style>
 </head>
 <body>
