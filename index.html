@@ -127,6 +127,87 @@
   .action{font-size:16px;padding:8px 6px;}
 }
 
+
+
+/* iPad Safari横画面：ボタン重なり修正・問題カードを縦フレックス化 */
+@media (orientation: landscape) and (min-width:900px) and (max-width:1366px){
+  .right-zone{
+    display:flex !important;
+    flex-direction:column !important;
+    overflow:hidden !important;
+    max-height:calc(100dvh - 185px) !important;
+  }
+  .question-head,
+  .mini-board,
+  .reaction-box,
+  .question,
+  .actions,
+  .result{
+    flex:0 0 auto !important;
+  }
+  .choices{
+    flex:1 1 auto !important;
+    min-height:0 !important;
+    overflow:auto !important;
+    padding-right:2px !important;
+    margin-bottom:8px !important;
+    display:grid !important;
+    gap:6px !important;
+  }
+  .actions{
+    position:static !important;
+    z-index:1 !important;
+    transform:none !important;
+    margin-top:4px !important;
+  }
+  .choice{
+    min-height:38px !important;
+    padding:7px 12px !important;
+  }
+  .reaction-box{
+    padding:7px 10px !important;
+    margin:4px 0 7px !important;
+  }
+  .reaction-box .reaction-formula{
+    font-size:clamp(21px,2.55vw,29px) !important;
+    line-height:1.18 !important;
+  }
+  .question{
+    font-size:clamp(21px,2.45vw,30px) !important;
+    line-height:1.25 !important;
+    margin:5px 0 7px !important;
+  }
+}
+
+/* Safariの上下バーが出て高さが狭い場合は、左を少し小さくして右を優先 */
+@media (orientation: landscape) and (min-width:900px) and (max-height:720px){
+  .right-zone{
+    max-height:calc(100dvh - 170px) !important;
+    padding:10px 14px !important;
+  }
+  .battle-layout{
+    grid-template-columns:minmax(300px,37%) 1fr !important;
+  }
+  .chapter-banner{font-size:clamp(19px,2.25vw,27px) !important;}
+  .boss-card{padding:10px 13px !important;}
+  .boss-art{height:clamp(82px,15vh,128px) !important;}
+  .boss-sub{font-size:12px !important;line-height:1.15 !important;}
+  .boss-name{font-size:clamp(18px,2.1vw,25px) !important;}
+  .data-card{padding:10px 12px !important;}
+  .data-title{font-size:clamp(17px,1.8vw,22px) !important;margin-bottom:6px !important;}
+  .data{gap:5px !important;}
+  .data div,.data span{font-size:clamp(14px,1.45vw,18px) !important;padding:5px 7px !important;}
+  .questionNo{font-size:clamp(23px,2.7vw,34px) !important;padding:7px 13px !important;}
+  .tag{font-size:clamp(13px,1.45vw,17px) !important;padding:7px 10px !important;}
+  .reaction-box .reaction-label{font-size:12px !important;margin-bottom:2px !important;}
+  .reaction-box .reaction-formula{font-size:clamp(19px,2.35vw,27px) !important;}
+  .question{font-size:clamp(19px,2.25vw,27px) !important;line-height:1.2 !important;}
+  .choice{font-size:clamp(16px,1.85vw,23px) !important;min-height:34px !important;padding:6px 11px !important;}
+  .action{font-size:clamp(15px,1.65vw,21px) !important;min-height:40px !important;padding:7px 7px !important;}
+  .actions{gap:7px !important;}
+  .result{max-height:8dvh !important;font-size:clamp(14px,1.55vw,19px) !important;}
+}
+
 </style>
 </head>
 <body>
