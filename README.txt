@@ -1,5 +1,1 @@
-CHEM QUEST 修正版
-- index.html をブラウザで開いてください。
-- 問題順は固定です。
-- 選択肢のみランダム表示です。
-- iPad横画面用CSS、音声、画像を同梱しています。
+Classroom配信用の1ファイル版です。index.htmlだけで画像・音声・CSS・JSを含みます。Google Classroom/Driveのプレビューで動かない場合は、Safari/Chromeで開くか、GitHub Pages等で公開したURLをClassroomに貼ってください。
